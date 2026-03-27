@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +6,6 @@
 <title>八字排盤</title>
 
 <!-- PWA / 加入主畫面設定 -->
-
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="八字排盤">
@@ -15,236 +13,233 @@
 <meta name="theme-color" content="#0d0a05">
 
 <!-- App 圖示（SVG 轉 inline base64） -->
-
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMGQwYTA1Ii8+PHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjE2NCIgaGVpZ2h0PSIxNjQiIHJ4PSIzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhODRjIiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI5MCIgeT0iMTEwIiBmb250LXNpemU9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYzlhODRjIiBmb250LWZhbWlseT0ic2VyaWYiPuWfacility8L3RleHQ+PC9zdmc+">
 <link rel="apple-touch-startup-image" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MzAgOTMyIj48cmVjdCB3aWR0aD0iNDMwIiBoZWlnaHQ9IjkzMiIgZmlsbD0iIzBkMGEwNSIvPjwvc3ZnPg==">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Ma+Shan+Zheng&display=swap');
 
-:root {
-–gold: #c9a84c; –gold-light: #e8c97a; –gold-dark: #8a6a1a;
-–red: #c0392b; –ink: #1a1008; –paper: #f5ead0;
-}
+  :root {
+    --gold: #c9a84c; --gold-light: #e8c97a; --gold-dark: #8a6a1a;
+    --red: #c0392b; --ink: #1a1008; --paper: #f5ead0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0a05; color: var(--paper); font-family: 'Noto Serif TC', serif; min-height: 100vh; overflow-x: hidden; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(44,110,156,0.08) 0%, transparent 50%), #0d0a05; z-index:0; }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0d0a05; color: var(–paper); font-family: ‘Noto Serif TC’, serif; min-height: 100vh; overflow-x: hidden; }
-  body::before { content:’’; position:fixed; inset:0; background: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(44,110,156,0.08) 0%, transparent 50%), #0d0a05; z-index:0; }
+  .stars-bg { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .star-dot { position:absolute; background:white; border-radius:50%; animation:twinkle var(--dur) infinite alternate; opacity:0; }
+  @keyframes twinkle { from{opacity:0.1} to{opacity:0.7} }
 
-.stars-bg { position:fixed; inset:0; z-index:0; pointer-events:none; }
-.star-dot { position:absolute; background:white; border-radius:50%; animation:twinkle var(–dur) infinite alternate; opacity:0; }
-@keyframes twinkle { from{opacity:0.1} to{opacity:0.7} }
+  .container { position:relative; z-index:1; max-width:960px; margin:0 auto; padding:20px 16px calc(60px + env(safe-area-inset-bottom)); padding-top: max(20px, env(safe-area-inset-top)); }
 
-.container { position:relative; z-index:1; max-width:960px; margin:0 auto; padding:20px 16px calc(60px + env(safe-area-inset-bottom)); padding-top: max(20px, env(safe-area-inset-top)); }
+  header { text-align:center; padding:36px 0 24px; }
+  .header-ornament { font-size:13px; letter-spacing:8px; color:var(--gold); opacity:0.7; margin-bottom:10px; }
+  h1 { font-family:'Ma Shan Zheng',serif; font-size:clamp(36px,8vw,60px); color:var(--gold-light); text-shadow:0 0 40px rgba(201,168,76,0.4),0 2px 4px rgba(0,0,0,0.8); letter-spacing:12px; line-height:1.1; }
+  h1 span { display:block; font-size:0.44em; letter-spacing:14px; color:var(--gold); opacity:0.8; margin-top:6px; }
+  .divider { display:flex; align-items:center; gap:12px; margin:18px auto; max-width:400px; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+  .divider-gem { width:8px; height:8px; background:var(--gold); transform:rotate(45deg); }
 
-header { text-align:center; padding:36px 0 24px; }
-.header-ornament { font-size:13px; letter-spacing:8px; color:var(–gold); opacity:0.7; margin-bottom:10px; }
-h1 { font-family:‘Ma Shan Zheng’,serif; font-size:clamp(36px,8vw,60px); color:var(–gold-light); text-shadow:0 0 40px rgba(201,168,76,0.4),0 2px 4px rgba(0,0,0,0.8); letter-spacing:12px; line-height:1.1; }
-h1 span { display:block; font-size:0.44em; letter-spacing:14px; color:var(–gold); opacity:0.8; margin-top:6px; }
-.divider { display:flex; align-items:center; gap:12px; margin:18px auto; max-width:400px; }
-.divider::before,.divider::after { content:’’; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(–gold),transparent); }
-.divider-gem { width:8px; height:8px; background:var(–gold); transform:rotate(45deg); }
+  /* Profiles */
+  .profiles-panel { background:linear-gradient(135deg,rgba(201,168,76,0.05),rgba(201,168,76,0.01)); border:1px solid rgba(201,168,76,0.22); padding:20px 24px; margin-bottom:22px; position:relative; }
+  .profiles-panel::before { content:'儲存的命盤'; position:absolute; top:-11px; left:20px; background:#0d0a05; padding:0 10px; color:var(--gold); font-size:11px; letter-spacing:4px; }
+  .profiles-empty { text-align:center; color:rgba(245,234,208,0.3); font-size:13px; letter-spacing:2px; padding:14px 0; }
+  .profiles-list { display:flex; flex-wrap:wrap; gap:10px; }
 
-/* Profiles */
-.profiles-panel { background:linear-gradient(135deg,rgba(201,168,76,0.05),rgba(201,168,76,0.01)); border:1px solid rgba(201,168,76,0.22); padding:20px 24px; margin-bottom:22px; position:relative; }
-.profiles-panel::before { content:‘儲存的命盤’; position:absolute; top:-11px; left:20px; background:#0d0a05; padding:0 10px; color:var(–gold); font-size:11px; letter-spacing:4px; }
-.profiles-empty { text-align:center; color:rgba(245,234,208,0.3); font-size:13px; letter-spacing:2px; padding:14px 0; }
-.profiles-list { display:flex; flex-wrap:wrap; gap:10px; }
+  .profile-chip { display:flex; align-items:center; border:1px solid rgba(201,168,76,0.25); border-radius:2px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,background 0.2s; }
+  .profile-chip:hover { border-color:var(--gold); }
+  .profile-chip.active { border-color:var(--gold); background:rgba(201,168,76,0.12); }
+  .chip-avatar { width:40px; height:40px; background:rgba(201,168,76,0.15); display:flex; align-items:center; justify-content:center; font-family:'Ma Shan Zheng',serif; font-size:20px; color:var(--gold-light); flex-shrink:0; }
+  .chip-info { padding:6px 12px 6px 10px; }
+  .chip-name { font-size:14px; color:var(--paper); letter-spacing:1px; }
+  .chip-meta { font-size:10px; color:rgba(245,234,208,0.4); letter-spacing:1px; margin-top:2px; }
+  .chip-delete { width:30px; height:40px; display:flex; align-items:center; justify-content:center; color:rgba(245,234,208,0.3); font-size:13px; border-left:1px solid rgba(201,168,76,0.15); transition:color 0.2s,background 0.2s; cursor:pointer; flex-shrink:0; }
+  .chip-delete:hover { color:var(--red); background:rgba(192,57,43,0.12); }
 
-.profile-chip { display:flex; align-items:center; border:1px solid rgba(201,168,76,0.25); border-radius:2px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,background 0.2s; }
-.profile-chip:hover { border-color:var(–gold); }
-.profile-chip.active { border-color:var(–gold); background:rgba(201,168,76,0.12); }
-.chip-avatar { width:40px; height:40px; background:rgba(201,168,76,0.15); display:flex; align-items:center; justify-content:center; font-family:‘Ma Shan Zheng’,serif; font-size:20px; color:var(–gold-light); flex-shrink:0; }
-.chip-info { padding:6px 12px 6px 10px; }
-.chip-name { font-size:14px; color:var(–paper); letter-spacing:1px; }
-.chip-meta { font-size:10px; color:rgba(245,234,208,0.4); letter-spacing:1px; margin-top:2px; }
-.chip-delete { width:30px; height:40px; display:flex; align-items:center; justify-content:center; color:rgba(245,234,208,0.3); font-size:13px; border-left:1px solid rgba(201,168,76,0.15); transition:color 0.2s,background 0.2s; cursor:pointer; flex-shrink:0; }
-.chip-delete:hover { color:var(–red); background:rgba(192,57,43,0.12); }
+  /* Input */
+  .input-panel { background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); padding:24px 28px 20px; margin-bottom:22px; position:relative; }
+  .input-panel::before { content:attr(data-label); position:absolute; top:-11px; left:20px; background:#0d0a05; padding:0 10px; color:var(--gold); font-size:11px; letter-spacing:4px; }
+  .input-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; align-items:end; }
+  .field-group { display:flex; flex-direction:column; gap:5px; }
+  label { font-size:11px; letter-spacing:3px; color:var(--gold); opacity:0.8; }
+  input,select { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:2px; color:var(--paper); font-family:'Noto Serif TC',serif; font-size:15px; padding:9px 12px; transition:border-color 0.2s,background 0.2s; width:100%; }
+  input:focus,select:focus { outline:none; border-color:var(--gold); background:rgba(201,168,76,0.1); }
+  input[type="number"]::-webkit-inner-spin-button { opacity:0.3; }
+  select option { background:#1a1008; color:var(--paper); }
 
-/* Input */
-.input-panel { background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); padding:24px 28px 20px; margin-bottom:22px; position:relative; }
-.input-panel::before { content:attr(data-label); position:absolute; top:-11px; left:20px; background:#0d0a05; padding:0 10px; color:var(–gold); font-size:11px; letter-spacing:4px; }
-.input-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; align-items:end; }
-.field-group { display:flex; flex-direction:column; gap:5px; }
-label { font-size:11px; letter-spacing:3px; color:var(–gold); opacity:0.8; }
-input,select { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:2px; color:var(–paper); font-family:‘Noto Serif TC’,serif; font-size:15px; padding:9px 12px; transition:border-color 0.2s,background 0.2s; width:100%; }
-input:focus,select:focus { outline:none; border-color:var(–gold); background:rgba(201,168,76,0.1); }
-input[type=“number”]::-webkit-inner-spin-button { opacity:0.3; }
-select option { background:#1a1008; color:var(–paper); }
+  .btn-row { display:flex; gap:10px; margin-top:14px; }
+  .btn { border:none; border-radius:2px; cursor:pointer; font-family:'Noto Serif TC',serif; font-size:14px; font-weight:700; letter-spacing:4px; padding:11px 20px; transition:all 0.25s; }
+  .btn-primary { flex:2; background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-dark)); color:var(--ink); }
+  .btn-primary:hover { background:linear-gradient(135deg,var(--gold),var(--gold-light),var(--gold)); box-shadow:0 4px 20px rgba(201,168,76,0.35); transform:translateY(-1px); }
+  .btn-save { flex:1; background:transparent; border:1px solid rgba(201,168,76,0.35); color:var(--gold); }
+  .btn-save:hover:not(:disabled) { border-color:var(--gold); background:rgba(201,168,76,0.1); }
+  .btn-save:disabled { opacity:0.3; cursor:not-allowed; }
 
-.btn-row { display:flex; gap:10px; margin-top:14px; }
-.btn { border:none; border-radius:2px; cursor:pointer; font-family:‘Noto Serif TC’,serif; font-size:14px; font-weight:700; letter-spacing:4px; padding:11px 20px; transition:all 0.25s; }
-.btn-primary { flex:2; background:linear-gradient(135deg,var(–gold-dark),var(–gold),var(–gold-dark)); color:var(–ink); }
-.btn-primary:hover { background:linear-gradient(135deg,var(–gold),var(–gold-light),var(–gold)); box-shadow:0 4px 20px rgba(201,168,76,0.35); transform:translateY(-1px); }
-.btn-save { flex:1; background:transparent; border:1px solid rgba(201,168,76,0.35); color:var(–gold); }
-.btn-save:hover:not(:disabled) { border-color:var(–gold); background:rgba(201,168,76,0.1); }
-.btn-save:disabled { opacity:0.3; cursor:not-allowed; }
+  /* Modal */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:100; align-items:center; justify-content:center; }
+  .modal-overlay.show { display:flex; }
+  .modal { background:#15100a; border:1px solid rgba(201,168,76,0.35); padding:32px; max-width:380px; width:90%; position:relative; animation:fadeIn 0.25s ease; }
+  .modal-title { font-family:'Ma Shan Zheng',serif; font-size:20px; color:var(--gold-light); letter-spacing:6px; margin-bottom:20px; text-align:center; }
+  .modal-close { position:absolute; top:12px; right:16px; color:rgba(245,234,208,0.4); font-size:18px; cursor:pointer; background:none; border:none; transition:color 0.2s; }
+  .modal-close:hover { color:var(--paper); }
 
-/* Modal */
-.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:100; align-items:center; justify-content:center; }
-.modal-overlay.show { display:flex; }
-.modal { background:#15100a; border:1px solid rgba(201,168,76,0.35); padding:32px; max-width:380px; width:90%; position:relative; animation:fadeIn 0.25s ease; }
-.modal-title { font-family:‘Ma Shan Zheng’,serif; font-size:20px; color:var(–gold-light); letter-spacing:6px; margin-bottom:20px; text-align:center; }
-.modal-close { position:absolute; top:12px; right:16px; color:rgba(245,234,208,0.4); font-size:18px; cursor:pointer; background:none; border:none; transition:color 0.2s; }
-.modal-close:hover { color:var(–paper); }
+  /* Results */
+  #results { display:none; }
+  #results.show { display:block; animation:fadeIn 0.5s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
 
-/* Results */
-#results { display:none; }
-#results.show { display:block; animation:fadeIn 0.5s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .result-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding:14px 18px; border:1px solid rgba(201,168,76,0.2); background:rgba(201,168,76,0.04); }
+  .result-name { font-family:'Ma Shan Zheng',serif; font-size:24px; color:var(--gold-light); letter-spacing:4px; }
+  .result-birthdate { font-size:12px; color:rgba(245,234,208,0.5); letter-spacing:2px; margin-top:3px; }
 
-.result-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding:14px 18px; border:1px solid rgba(201,168,76,0.2); background:rgba(201,168,76,0.04); }
-.result-name { font-family:‘Ma Shan Zheng’,serif; font-size:24px; color:var(–gold-light); letter-spacing:4px; }
-.result-birthdate { font-size:12px; color:rgba(245,234,208,0.5); letter-spacing:2px; margin-top:3px; }
+  .section-title { font-family:'Ma Shan Zheng',serif; font-size:20px; color:var(--gold-light); letter-spacing:6px; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+  .section-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent); }
 
-.section-title { font-family:‘Ma Shan Zheng’,serif; font-size:20px; color:var(–gold-light); letter-spacing:6px; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
-.section-title::after { content:’’; flex:1; height:1px; background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent); }
+  .bazi-table { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid rgba(201,168,76,0.3); margin-bottom:22px; overflow:hidden; }
+  .bazi-col { display:flex; flex-direction:column; border-right:1px solid rgba(201,168,76,0.2); }
+  .bazi-col:last-child { border-right:none; }
+  .bazi-header { background:rgba(201,168,76,0.12); border-bottom:1px solid rgba(201,168,76,0.2); color:var(--gold); font-size:11px; letter-spacing:3px; padding:8px; text-align:center; }
+  .bazi-cell { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 6px; gap:5px; border-bottom:1px solid rgba(201,168,76,0.1); }
+  .bazi-cell:last-child { border-bottom:none; }
+  .heavenly-stem,.earthly-branch { font-family:'Ma Shan Zheng',serif; font-size:34px; line-height:1; }
+  .element-badge { font-size:10px; letter-spacing:1px; padding:2px 7px; border-radius:20px; border:1px solid currentColor; opacity:0.8; }
+  .hidden-stems { font-size:11px; color:rgba(245,234,208,0.45); text-align:center; line-height:1.8; }
 
-.bazi-table { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid rgba(201,168,76,0.3); margin-bottom:22px; overflow:hidden; }
-.bazi-col { display:flex; flex-direction:column; border-right:1px solid rgba(201,168,76,0.2); }
-.bazi-col:last-child { border-right:none; }
-.bazi-header { background:rgba(201,168,76,0.12); border-bottom:1px solid rgba(201,168,76,0.2); color:var(–gold); font-size:11px; letter-spacing:3px; padding:8px; text-align:center; }
-.bazi-cell { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 6px; gap:5px; border-bottom:1px solid rgba(201,168,76,0.1); }
-.bazi-cell:last-child { border-bottom:none; }
-.heavenly-stem,.earthly-branch { font-family:‘Ma Shan Zheng’,serif; font-size:34px; line-height:1; }
-.element-badge { font-size:10px; letter-spacing:1px; padding:2px 7px; border-radius:20px; border:1px solid currentColor; opacity:0.8; }
-.hidden-stems { font-size:11px; color:rgba(245,234,208,0.45); text-align:center; line-height:1.8; }
+  .wood{color:#7dba5a} .fire{color:#e05540} .earth{color:#d4a435} .metal{color:#aabcc8} .water{color:#5a9dc8}
 
-.wood{color:#7dba5a} .fire{color:#e05540} .earth{color:#d4a435} .metal{color:#aabcc8} .water{color:#5a9dc8}
+  /* 十神 badge */
+  .shishen-badge {
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid currentColor;
+    opacity: 0.85;
+    font-weight: 500;
+  }
 
-/* 十神 badge */
-.shishen-badge {
-font-size: 11px;
-letter-spacing: 1px;
-padding: 2px 8px;
-border-radius: 2px;
-background: rgba(255,255,255,0.05);
-border: 1px solid currentColor;
-opacity: 0.85;
-font-weight: 500;
-}
+  .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-bottom:22px; }
+  .info-card { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.2); padding:18px; }
+  .info-card-title { font-size:11px; letter-spacing:4px; color:var(--gold); margin-bottom:14px; }
 
-.info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-bottom:22px; }
-.info-card { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.2); padding:18px; }
-.info-card-title { font-size:11px; letter-spacing:4px; color:var(–gold); margin-bottom:14px; }
+  .five-elements { display:flex; gap:8px; }
+  .element-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .element-name { font-family:'Ma Shan Zheng',serif; font-size:26px; }
+  .element-bar-wrap { width:100%; height:54px; background:rgba(255,255,255,0.05); border-radius:2px; display:flex; align-items:flex-end; overflow:hidden; }
+  .element-bar { width:100%; border-radius:2px 2px 0 0; transition:height 0.8s cubic-bezier(.4,0,.2,1); }
+  .element-count { font-size:16px; font-weight:700; opacity:0.9; }
 
-.five-elements { display:flex; gap:8px; }
-.element-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
-.element-name { font-family:‘Ma Shan Zheng’,serif; font-size:26px; }
-.element-bar-wrap { width:100%; height:54px; background:rgba(255,255,255,0.05); border-radius:2px; display:flex; align-items:flex-end; overflow:hidden; }
-.element-bar { width:100%; border-radius:2px 2px 0 0; transition:height 0.8s cubic-bezier(.4,0,.2,1); }
-.element-count { font-size:16px; font-weight:700; opacity:0.9; }
+  .stars-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .star-item { display:flex; flex-direction:column; align-items:center; gap:3px; padding:12px 6px; background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.13); }
+  .star-icon { font-family:'Ma Shan Zheng',serif; font-size:26px; color:var(--gold-light); }
+  .star-label { font-size:10px; letter-spacing:2px; color:var(--gold); opacity:0.7; }
+  .star-value { font-size:12px; color:var(--paper); text-align:center; line-height:1.4; }
+  .star-count { display:inline-block; background:rgba(201,168,76,0.2); color:var(--gold-light); border-radius:20px; padding:1px 9px; font-size:11px; margin-top:2px; }
 
-.stars-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-.star-item { display:flex; flex-direction:column; align-items:center; gap:3px; padding:12px 6px; background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.13); }
-.star-icon { font-family:‘Ma Shan Zheng’,serif; font-size:26px; color:var(–gold-light); }
-.star-label { font-size:10px; letter-spacing:2px; color:var(–gold); opacity:0.7; }
-.star-value { font-size:12px; color:var(–paper); text-align:center; line-height:1.4; }
-.star-count { display:inline-block; background:rgba(201,168,76,0.2); color:var(–gold-light); border-radius:20px; padding:1px 9px; font-size:11px; margin-top:2px; }
+  .ziwei-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:22px; }
+  .ziwei-item { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.2); padding:14px; display:flex; align-items:center; gap:12px; }
+  .ziwei-icon { font-family:'Ma Shan Zheng',serif; font-size:30px; color:var(--gold-light); min-width:36px; text-align:center; }
+  .ziwei-name { font-size:12px; letter-spacing:2px; color:var(--gold); margin-bottom:3px; }
+  .ziwei-value { font-size:15px; color:var(--paper); }
+  .ziwei-desc { font-size:10px; color:rgba(245,234,208,0.45); margin-top:2px; }
 
-.ziwei-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:22px; }
-.ziwei-item { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.2); padding:14px; display:flex; align-items:center; gap:12px; }
-.ziwei-icon { font-family:‘Ma Shan Zheng’,serif; font-size:30px; color:var(–gold-light); min-width:36px; text-align:center; }
-.ziwei-name { font-size:12px; letter-spacing:2px; color:var(–gold); margin-bottom:3px; }
-.ziwei-value { font-size:15px; color:var(–paper); }
-.ziwei-desc { font-size:10px; color:rgba(245,234,208,0.45); margin-top:2px; }
+  .dayun-list { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:22px; }
+  .dayun-list::-webkit-scrollbar { height:4px; }
+  .dayun-list::-webkit-scrollbar-track { background:rgba(255,255,255,0.05); }
+  .dayun-list::-webkit-scrollbar-thumb { background:var(--gold-dark); }
+  .dayun-item { flex:0 0 72px; display:flex; flex-direction:column; align-items:center; padding:10px 4px; border:1px solid rgba(201,168,76,0.15); background:rgba(201,168,76,0.03); gap:3px; position:relative; }
+  .dayun-item.current { border-color:var(--gold); background:rgba(201,168,76,0.12); }
+  .dayun-item.current::before { content:'▼'; position:absolute; top:-14px; color:var(--gold); font-size:9px; }
+  .dayun-age { font-size:10px; color:var(--gold); letter-spacing:1px; }
+  .dayun-stem,.dayun-branch { font-family:'Ma Shan Zheng',serif; font-size:20px; line-height:1; }
 
-.dayun-list { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:22px; }
-.dayun-list::-webkit-scrollbar { height:4px; }
-.dayun-list::-webkit-scrollbar-track { background:rgba(255,255,255,0.05); }
-.dayun-list::-webkit-scrollbar-thumb { background:var(–gold-dark); }
-.dayun-item { flex:0 0 72px; display:flex; flex-direction:column; align-items:center; padding:10px 4px; border:1px solid rgba(201,168,76,0.15); background:rgba(201,168,76,0.03); gap:3px; position:relative; }
-.dayun-item.current { border-color:var(–gold); background:rgba(201,168,76,0.12); }
-.dayun-item.current::before { content:‘▼’; position:absolute; top:-14px; color:var(–gold); font-size:9px; }
-.dayun-age { font-size:10px; color:var(–gold); letter-spacing:1px; }
-.dayun-stem,.dayun-branch { font-family:‘Ma Shan Zheng’,serif; font-size:20px; line-height:1; }
+  @media(max-width:600px) {
+    .heavenly-stem,.earthly-branch{font-size:26px}
+    .ziwei-grid{grid-template-columns:1fr}
+    .stars-grid{grid-template-columns:repeat(2,1fr)}
+    .btn-row{flex-direction:column}
+  }
 
-@media(max-width:600px) {
-.heavenly-stem,.earthly-branch{font-size:26px}
-.ziwei-grid{grid-template-columns:1fr}
-.stars-grid{grid-template-columns:repeat(2,1fr)}
-.btn-row{flex-direction:column}
-}
+  /* Analysis */
+  .analysis-intro {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 2;
+    color: rgba(245,234,208,0.75);
+    letter-spacing: 1px;
+  }
+  .analysis-intro strong { color: var(--gold-light); font-weight: 500; }
 
-/* Analysis */
-.analysis-intro {
-background: rgba(201,168,76,0.04);
-border: 1px solid rgba(201,168,76,0.18);
-border-left: 3px solid var(–gold);
-padding: 16px 20px;
-margin-bottom: 16px;
-font-size: 14px;
-line-height: 2;
-color: rgba(245,234,208,0.75);
-letter-spacing: 1px;
-}
-.analysis-intro strong { color: var(–gold-light); font-weight: 500; }
+  .analysis-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
 
-.analysis-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .analysis-card {
+    border: 1px solid rgba(201,168,76,0.18);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .analysis-card:hover { border-color: rgba(201,168,76,0.4); }
 
-.analysis-card {
-border: 1px solid rgba(201,168,76,0.18);
-overflow: hidden;
-transition: border-color 0.2s;
-}
-.analysis-card:hover { border-color: rgba(201,168,76,0.4); }
+  .analysis-card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px;
+    background: rgba(201,168,76,0.06);
+    cursor: pointer;
+    user-select: none;
+  }
+  .analysis-card-icon {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 28px; color: var(--gold-light);
+    min-width: 34px; text-align: center;
+  }
+  .analysis-card-meta { flex: 1; }
+  .analysis-card-title { font-size: 15px; color: var(--paper); letter-spacing: 2px; }
+  .analysis-card-subtitle { font-size: 11px; color: var(--gold); opacity: 0.7; letter-spacing: 2px; margin-top: 3px; }
+  .analysis-card-badge {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .badge-count {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 22px; color: var(--gold-light);
+    min-width: 28px; text-align: center;
+  }
+  .badge-unit { font-size: 10px; color: rgba(245,234,208,0.4); letter-spacing: 1px; }
+  .analysis-chevron {
+    color: rgba(245,234,208,0.3); font-size: 12px;
+    transition: transform 0.25s;
+  }
+  .analysis-card.open .analysis-chevron { transform: rotate(180deg); }
 
-.analysis-card-header {
-display: flex; align-items: center; gap: 14px;
-padding: 14px 18px;
-background: rgba(201,168,76,0.06);
-cursor: pointer;
-user-select: none;
-}
-.analysis-card-icon {
-font-family: ‘Ma Shan Zheng’, serif;
-font-size: 28px; color: var(–gold-light);
-min-width: 34px; text-align: center;
-}
-.analysis-card-meta { flex: 1; }
-.analysis-card-title { font-size: 15px; color: var(–paper); letter-spacing: 2px; }
-.analysis-card-subtitle { font-size: 11px; color: var(–gold); opacity: 0.7; letter-spacing: 2px; margin-top: 3px; }
-.analysis-card-badge {
-display: flex; align-items: center; gap: 6px;
-}
-.badge-count {
-font-family: ‘Ma Shan Zheng’, serif;
-font-size: 22px; color: var(–gold-light);
-min-width: 28px; text-align: center;
-}
-.badge-unit { font-size: 10px; color: rgba(245,234,208,0.4); letter-spacing: 1px; }
-.analysis-chevron {
-color: rgba(245,234,208,0.3); font-size: 12px;
-transition: transform 0.25s;
-}
-.analysis-card.open .analysis-chevron { transform: rotate(180deg); }
+  .analysis-card-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(.4,0,.2,1);
+  }
+  .analysis-card.open .analysis-card-body { max-height: 600px; }
 
-.analysis-card-body {
-max-height: 0; overflow: hidden;
-transition: max-height 0.35s cubic-bezier(.4,0,.2,1);
-}
-.analysis-card.open .analysis-card-body { max-height: 600px; }
+  .analysis-card-content {
+    padding: 16px 20px 18px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
 
-.analysis-card-content {
-padding: 16px 20px 18px;
-border-top: 1px solid rgba(201,168,76,0.1);
-}
+  .analysis-level {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .level-label { font-size: 11px; letter-spacing: 2px; color: var(--gold); opacity: 0.7; min-width: 28px; }
+  .level-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+  .level-bar { height: 100%; border-radius: 3px; transition: width 0.7s cubic-bezier(.4,0,.2,1); }
+  .level-desc { font-size: 11px; color: rgba(245,234,208,0.5); min-width: 24px; text-align: right; }
 
-.analysis-level {
-display: flex; align-items: center; gap: 10px;
-margin-bottom: 12px;
-}
-.level-label { font-size: 11px; letter-spacing: 2px; color: var(–gold); opacity: 0.7; min-width: 28px; }
-.level-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-.level-bar { height: 100%; border-radius: 3px; transition: width 0.7s cubic-bezier(.4,0,.2,1); }
-.level-desc { font-size: 11px; color: rgba(245,234,208,0.5); min-width: 24px; text-align: right; }
-
-.analysis-text { font-size: 13px; line-height: 2; color: rgba(245,234,208,0.7); letter-spacing: 0.5px; }
-.analysis-text + .analysis-text { margin-top: 10px; }
-.highlight-pos { color: #7dba5a; }
-.highlight-neg { color: #e05540; }
-.highlight-neu { color: var(–gold-light); }
+  .analysis-text { font-size: 13px; line-height: 2; color: rgba(245,234,208,0.7); letter-spacing: 0.5px; }
+  .analysis-text + .analysis-text { margin-top: 10px; }
+  .highlight-pos { color: #7dba5a; }
+  .highlight-neg { color: #e05540; }
+  .highlight-neu { color: var(--gold-light); }
 </style>
-
 </head>
 <body>
 
@@ -258,14 +253,12 @@ margin-bottom: 12px;
   </header>
 
   <!-- Saved Profiles -->
-
   <div class="profiles-panel">
     <div class="profiles-empty" id="profilesEmpty">尚無儲存的命盤</div>
     <div class="profiles-list" id="profilesList" style="display:none"></div>
   </div>
 
   <!-- Input -->
-
   <div class="input-panel" data-label="命主資訊">
     <div class="input-grid">
       <div class="field-group">
@@ -316,7 +309,6 @@ margin-bottom: 12px;
   </div>
 
   <!-- Results -->
-
   <div id="results">
     <div class="result-header">
       <div>
@@ -336,16 +328,12 @@ margin-bottom: 12px;
     <div class="section-title">大運流年</div>
     <div class="dayun-list" id="dayunList"></div>
 
-```
-<div class="section-title">命盤解析</div>
-<div id="analysisPanel"></div>
-```
-
+    <div class="section-title">命盤解析</div>
+    <div id="analysisPanel"></div>
   </div>
 </div>
 
 <!-- Modal -->
-
 <div class="modal-overlay" id="saveModal">
   <div class="modal">
     <button class="modal-close" onclick="closeSaveModal()">✕</button>
@@ -863,6 +851,5 @@ async function init() {
 }
 init();
 </script>
-
 </body>
 </html>
