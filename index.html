@@ -3,247 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>八字排盤</title>
+<title>八字排盤 - 專業版</title>
 
-<!-- PWA / 加入主畫面設定 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="八字排盤">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0d0a05">
 
-<!-- App 圖示（SVG 轉 inline base64） -->
-<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMGQwYTA1Ii8+PHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjE2NCIgaGVpZ2h0PSIxNjQiIHJ4PSIzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhODRjIiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI5MCIgeT0iMTEwIiBmb250LXNpemU9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYzlhODRjIiBmb250LWZhbWlseT0ic2VyaWYiPuWfacility8L3RleHQ+PC9zdmc+">
-<link rel="apple-touch-startup-image" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MzAgOTMyIj48cmVjdCB3aWR0aD0iNDMwIiBoZWlnaHQ9IjkzMiIgZmlsbD0iIzBkMGEwNSIvPjwvc3ZnPg==">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Ma+Shan+Zheng&display=swap');
 
   :root {
-    --gold: #c9a84c; --gold-light: #e8c97a; --gold-dark: #8a6a1a;
-    --red: #c0392b; --ink: #1a1008; --paper: #f5ead0;
+    --gold: #c9a84c; 
+    --gold-light: #e8c97a; 
+    --gold-dark: #8a6a1a;
+    --red: #c0392b; 
+    --ink: #1a1008; 
+    --paper: #f5ead0;
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0d0a05; color: var(--paper); font-family: 'Noto Serif TC', serif; min-height: 100vh; overflow-x: hidden; }
-  body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(44,110,156,0.08) 0%, transparent 50%), #0d0a05; z-index:0; }
 
-  .stars-bg { position:fixed; inset:0; z-index:0; pointer-events:none; }
-  .star-dot { position:absolute; background:white; border-radius:50%; animation:twinkle var(--dur) infinite alternate; opacity:0; }
-  @keyframes twinkle { from{opacity:0.1} to{opacity:0.7} }
+  body { 
+    background: #0d0a05; 
+    color: var(--paper) !important; /* 強制文字顏色 */
+    font-family: 'Noto Serif TC', serif; 
+    min-height: 100vh; 
+    overflow-x: hidden; 
+  }
 
-  .container { position:relative; z-index:1; max-width:960px; margin:0 auto; padding:20px 16px calc(60px + env(safe-area-inset-bottom)); padding-top: max(20px, env(safe-area-inset-top)); }
+  /* 強制讓所有標籤、段落、跨度文字變亮 */
+  h1, h2, h3, p, span, label, div {
+    color: var(--paper) !important;
+  }
+
+  /* 調整輸入框顏色，讓字體在亮色背景下也好讀 */
+  input, select { 
+    background: rgba(255, 255, 255, 0.1) !important; 
+    border: 1px solid var(--gold) !important; 
+    color: #ffffff !important; 
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  .container { 
+    position:relative; 
+    z-index:1; 
+    max-width:960px; 
+    margin:0 auto; 
+    padding:20px 16px; 
+  }
 
   header { text-align:center; padding:36px 0 24px; }
-  .header-ornament { font-size:13px; letter-spacing:8px; color:var(--gold); opacity:0.7; margin-bottom:10px; }
-  h1 { font-family:'Ma Shan Zheng',serif; font-size:clamp(36px,8vw,60px); color:var(--gold-light); text-shadow:0 0 40px rgba(201,168,76,0.4),0 2px 4px rgba(0,0,0,0.8); letter-spacing:12px; line-height:1.1; }
-  h1 span { display:block; font-size:0.44em; letter-spacing:14px; color:var(--gold); opacity:0.8; margin-top:6px; }
-  .divider { display:flex; align-items:center; gap:12px; margin:18px auto; max-width:400px; }
-  .divider::before,.divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-  .divider-gem { width:8px; height:8px; background:var(--gold); transform:rotate(45deg); }
-
-  /* Profiles */
-  .profiles-panel { background:linear-gradient(135deg,rgba(201,168,76,0.05),rgba(201,168,76,0.01)); border:1px solid rgba(201,168,76,0.22); padding:20px 24px; margin-bottom:22px; position:relative; }
-  .profiles-panel::before { content:'儲存的命盤'; position:absolute; top:-11px; left:20px; background:#0d0a05; padding:0 10px; color:var(--gold); font-size:11px; letter-spacing:4px; }
-  .profiles-empty { text-align:center; color:rgba(245,234,208,0.3); font-size:13px; letter-spacing:2px; padding:14px 0; }
-  .profiles-list { display:flex; flex-wrap:wrap; gap:10px; }
-
-  .profile-chip { display:flex; align-items:center; border:1px solid rgba(201,168,76,0.25); border-radius:2px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,background 0.2s; }
-  .profile-chip:hover { border-color:var(--gold); }
-  .profile-chip.active { border-color:var(--gold); background:rgba(201,168,76,0.12); }
-  .chip-avatar { width:40px; height:40px; background:rgba(201,168,76,0.15); display:flex; align-items:center; justify-content:center; font-family:'Ma Shan Zheng',serif; font-size:20px; color:var(--gold-light); flex-shrink:0; }
-  .chip-info { padding:6px 12px 6px 10px; }
-  .chip-name { font-size:14px; color:var(--paper); letter-spacing:1px; }
-  .chip-meta { font-size:10px; color:rgba(245,234,208,0.4); letter-spacing:1px; margin-top:2px; }
-  .chip-delete { width:30px; height:40px; display:flex; align-items:center; justify-content:center; color:rgba(245,234,208,0.3); font-size:13px; border-left:1px solid rgba(201,168,76,0.15); transition:color 0.2s,background 0.2s; cursor:pointer; flex-shrink:0; }
-  .chip-delete:hover { color:var(--red); background:rgba(192,57,43,0.12); }
-
-  /* Input */
-  .input-panel { background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); padding:24px 28px 20px; margin-bottom:22px; position:relative; }
-  .input-panel::before { content:attr(data-label); position:absolute; top:-11px; left:20px; background:#0d0a05; padding:0 10px; color:var(--gold); font-size:11px; letter-spacing:4px; }
-  .input-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; align-items:end; }
-  .field-group { display:flex; flex-direction:column; gap:5px; }
-  label { font-size:11px; letter-spacing:3px; color:var(--gold); opacity:0.8; }
-  input,select { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:2px; color:var(--paper); font-family:'Noto Serif TC',serif; font-size:15px; padding:9px 12px; transition:border-color 0.2s,background 0.2s; width:100%; }
-  input:focus,select:focus { outline:none; border-color:var(--gold); background:rgba(201,168,76,0.1); }
-  input[type="number"]::-webkit-inner-spin-button { opacity:0.3; }
-  select option { background:#1a1008; color:var(--paper); }
-
-  .btn-row { display:flex; gap:10px; margin-top:14px; }
-  .btn { border:none; border-radius:2px; cursor:pointer; font-family:'Noto Serif TC',serif; font-size:14px; font-weight:700; letter-spacing:4px; padding:11px 20px; transition:all 0.25s; }
-  .btn-primary { flex:2; background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-dark)); color:var(--ink); }
-  .btn-primary:hover { background:linear-gradient(135deg,var(--gold),var(--gold-light),var(--gold)); box-shadow:0 4px 20px rgba(201,168,76,0.35); transform:translateY(-1px); }
-  .btn-save { flex:1; background:transparent; border:1px solid rgba(201,168,76,0.35); color:var(--gold); }
-  .btn-save:hover:not(:disabled) { border-color:var(--gold); background:rgba(201,168,76,0.1); }
-  .btn-save:disabled { opacity:0.3; cursor:not-allowed; }
-
-  /* Modal */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:100; align-items:center; justify-content:center; }
-  .modal-overlay.show { display:flex; }
-  .modal { background:#15100a; border:1px solid rgba(201,168,76,0.35); padding:32px; max-width:380px; width:90%; position:relative; animation:fadeIn 0.25s ease; }
-  .modal-title { font-family:'Ma Shan Zheng',serif; font-size:20px; color:var(--gold-light); letter-spacing:6px; margin-bottom:20px; text-align:center; }
-  .modal-close { position:absolute; top:12px; right:16px; color:rgba(245,234,208,0.4); font-size:18px; cursor:pointer; background:none; border:none; transition:color 0.2s; }
-  .modal-close:hover { color:var(--paper); }
-
-  /* Results */
-  #results { display:none; }
-  #results.show { display:block; animation:fadeIn 0.5s ease; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-
-  .result-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding:14px 18px; border:1px solid rgba(201,168,76,0.2); background:rgba(201,168,76,0.04); }
-  .result-name { font-family:'Ma Shan Zheng',serif; font-size:24px; color:var(--gold-light); letter-spacing:4px; }
-  .result-birthdate { font-size:12px; color:rgba(245,234,208,0.5); letter-spacing:2px; margin-top:3px; }
-
-  .section-title { font-family:'Ma Shan Zheng',serif; font-size:20px; color:var(--gold-light); letter-spacing:6px; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
-  .section-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent); }
-
-  .bazi-table { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid rgba(201,168,76,0.3); margin-bottom:22px; overflow:hidden; }
-  .bazi-col { display:flex; flex-direction:column; border-right:1px solid rgba(201,168,76,0.2); }
-  .bazi-col:last-child { border-right:none; }
-  .bazi-header { background:rgba(201,168,76,0.12); border-bottom:1px solid rgba(201,168,76,0.2); color:var(--gold); font-size:11px; letter-spacing:3px; padding:8px; text-align:center; }
-  .bazi-cell { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 6px; gap:5px; border-bottom:1px solid rgba(201,168,76,0.1); }
-  .bazi-cell:last-child { border-bottom:none; }
-  .heavenly-stem,.earthly-branch { font-family:'Ma Shan Zheng',serif; font-size:34px; line-height:1; }
-  .element-badge { font-size:10px; letter-spacing:1px; padding:2px 7px; border-radius:20px; border:1px solid currentColor; opacity:0.8; }
-  .hidden-stems { font-size:11px; color:rgba(245,234,208,0.45); text-align:center; line-height:1.8; }
-
-  .wood{color:#7dba5a} .fire{color:#e05540} .earth{color:#d4a435} .metal{color:#aabcc8} .water{color:#5a9dc8}
-
-  /* 十神 badge */
-  .shishen-badge {
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 2px 8px;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid currentColor;
-    opacity: 0.85;
-    font-weight: 500;
+  
+  h1 { 
+    font-family:'Ma Shan Zheng',serif; 
+    font-size:clamp(36px,8vw,60px); 
+    color:var(--gold-light) !important; 
+    text-shadow:0 0 20px rgba(201,168,76,0.6); 
+    letter-spacing:12px; 
   }
 
-  .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-bottom:22px; }
-  .info-card { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.2); padding:18px; }
-  .info-card-title { font-size:11px; letter-spacing:4px; color:var(--gold); margin-bottom:14px; }
-
-  .five-elements { display:flex; gap:8px; }
-  .element-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
-  .element-name { font-family:'Ma Shan Zheng',serif; font-size:26px; }
-  .element-bar-wrap { width:100%; height:54px; background:rgba(255,255,255,0.05); border-radius:2px; display:flex; align-items:flex-end; overflow:hidden; }
-  .element-bar { width:100%; border-radius:2px 2px 0 0; transition:height 0.8s cubic-bezier(.4,0,.2,1); }
-  .element-count { font-size:16px; font-weight:700; opacity:0.9; }
-
-  .stars-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .star-item { display:flex; flex-direction:column; align-items:center; gap:3px; padding:12px 6px; background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.13); }
-  .star-icon { font-family:'Ma Shan Zheng',serif; font-size:26px; color:var(--gold-light); }
-  .star-label { font-size:10px; letter-spacing:2px; color:var(--gold); opacity:0.7; }
-  .star-value { font-size:12px; color:var(--paper); text-align:center; line-height:1.4; }
-  .star-count { display:inline-block; background:rgba(201,168,76,0.2); color:var(--gold-light); border-radius:20px; padding:1px 9px; font-size:11px; margin-top:2px; }
-
-  .ziwei-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:22px; }
-  .ziwei-item { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.2); padding:14px; display:flex; align-items:center; gap:12px; }
-  .ziwei-icon { font-family:'Ma Shan Zheng',serif; font-size:30px; color:var(--gold-light); min-width:36px; text-align:center; }
-  .ziwei-name { font-size:12px; letter-spacing:2px; color:var(--gold); margin-bottom:3px; }
-  .ziwei-value { font-size:15px; color:var(--paper); }
-  .ziwei-desc { font-size:10px; color:rgba(245,234,208,0.45); margin-top:2px; }
-
-  .dayun-list { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:22px; }
-  .dayun-list::-webkit-scrollbar { height:4px; }
-  .dayun-list::-webkit-scrollbar-track { background:rgba(255,255,255,0.05); }
-  .dayun-list::-webkit-scrollbar-thumb { background:var(--gold-dark); }
-  .dayun-item { flex:0 0 72px; display:flex; flex-direction:column; align-items:center; padding:10px 4px; border:1px solid rgba(201,168,76,0.15); background:rgba(201,168,76,0.03); gap:3px; position:relative; }
-  .dayun-item.current { border-color:var(--gold); background:rgba(201,168,76,0.12); }
-  .dayun-item.current::before { content:'▼'; position:absolute; top:-14px; color:var(--gold); font-size:9px; }
-  .dayun-age { font-size:10px; color:var(--gold); letter-spacing:1px; }
-  .dayun-stem,.dayun-branch { font-family:'Ma Shan Zheng',serif; font-size:20px; line-height:1; }
-
-  @media(max-width:600px) {
-    .heavenly-stem,.earthly-branch{font-size:26px}
-    .ziwei-grid{grid-template-columns:1fr}
-    .stars-grid{grid-template-columns:repeat(2,1fr)}
-    .btn-row{flex-direction:column}
+  .input-panel { 
+    background: rgba(201,168,76,0.05); 
+    border: 1px solid rgba(201,168,76,0.3); 
+    padding: 24px; 
+    margin-bottom: 20px; 
+    border-radius: 8px;
   }
 
-  /* Analysis */
-  .analysis-intro {
-    background: rgba(201,168,76,0.04);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-left: 3px solid var(--gold);
-    padding: 16px 20px;
-    margin-bottom: 16px;
-    font-size: 14px;
-    line-height: 2;
-    color: rgba(245,234,208,0.75);
-    letter-spacing: 1px;
-  }
-  .analysis-intro strong { color: var(--gold-light); font-weight: 500; }
-
-  .analysis-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
-
-  .analysis-card {
-    border: 1px solid rgba(201,168,76,0.18);
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .analysis-card:hover { border-color: rgba(201,168,76,0.4); }
-
-  .analysis-card-header {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 18px;
-    background: rgba(201,168,76,0.06);
+  .btn-primary { 
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold)); 
+    color: var(--ink) !important; 
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    letter-spacing: 5px;
     cursor: pointer;
-    user-select: none;
-  }
-  .analysis-card-icon {
-    font-family: 'Ma Shan Zheng', serif;
-    font-size: 28px; color: var(--gold-light);
-    min-width: 34px; text-align: center;
-  }
-  .analysis-card-meta { flex: 1; }
-  .analysis-card-title { font-size: 15px; color: var(--paper); letter-spacing: 2px; }
-  .analysis-card-subtitle { font-size: 11px; color: var(--gold); opacity: 0.7; letter-spacing: 2px; margin-top: 3px; }
-  .analysis-card-badge {
-    display: flex; align-items: center; gap: 6px;
-  }
-  .badge-count {
-    font-family: 'Ma Shan Zheng', serif;
-    font-size: 22px; color: var(--gold-light);
-    min-width: 28px; text-align: center;
-  }
-  .badge-unit { font-size: 10px; color: rgba(245,234,208,0.4); letter-spacing: 1px; }
-  .analysis-chevron {
-    color: rgba(245,234,208,0.3); font-size: 12px;
-    transition: transform 0.25s;
-  }
-  .analysis-card.open .analysis-chevron { transform: rotate(180deg); }
-
-  .analysis-card-body {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(.4,0,.2,1);
-  }
-  .analysis-card.open .analysis-card-body { max-height: 600px; }
-
-  .analysis-card-content {
-    padding: 16px 20px 18px;
-    border-top: 1px solid rgba(201,168,76,0.1);
+    margin-top: 10px;
   }
 
-  .analysis-level {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 12px;
-  }
-  .level-label { font-size: 11px; letter-spacing: 2px; color: var(--gold); opacity: 0.7; min-width: 28px; }
-  .level-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-  .level-bar { height: 100%; border-radius: 3px; transition: width 0.7s cubic-bezier(.4,0,.2,1); }
-  .level-desc { font-size: 11px; color: rgba(245,234,208,0.5); min-width: 24px; text-align: right; }
+  /* 五行顏色設定 */
+  .wood { color: #7dba5a !important; } 
+  .fire { color: #e05540 !important; } 
+  .earth { color: #d4a435 !important; } 
+  .metal { color: #aabcc8 !important; } 
+  .water { color: #5a9dc8 !important; }
 
-  .analysis-text { font-size: 13px; line-height: 2; color: rgba(245,234,208,0.7); letter-spacing: 0.5px; }
-  .analysis-text + .analysis-text { margin-top: 10px; }
-  .highlight-pos { color: #7dba5a; }
-  .highlight-neg { color: #e05540; }
-  .highlight-neu { color: var(--gold-light); }
+  /* 這裡補齊你被截斷的表格樣式 */
+  .bazi-table { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    border: 1px solid var(--gold); 
+    margin-top: 20px;
+  }
+  .bazi-col { 
+    border-right: 1px solid rgba(201,168,76,0.3); 
+    text-align: center;
+  }
+  .bazi-header { background: rgba(201,168,76,0.2); padding: 10px; color: var(--gold) !important; }
+  .heavenly-stem, .earthly-branch { font-family: 'Ma Shan Zheng', serif; font-size: 30px; padding: 10px 0; }
 </style>
 </head>
 <body>
-
-<div class="stars-bg" id="starsBg"></div>
 
 <div class="container">
   <header>
@@ -252,604 +116,52 @@
     <div class="divider"><div class="divider-gem"></div></div>
   </header>
 
-  <!-- Saved Profiles -->
-  <div class="profiles-panel">
-    <div class="profiles-empty" id="profilesEmpty">尚無儲存的命盤</div>
-    <div class="profiles-list" id="profilesList" style="display:none"></div>
-  </div>
-
-  <!-- Input -->
   <div class="input-panel" data-label="命主資訊">
-    <div class="input-grid">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
       <div class="field-group">
-        <label>姓名／稱呼</label>
-        <input type="text" id="name" placeholder="例：小明">
+        <label>姓名 / 稱呼</label>
+        <input type="text" placeholder="例：小明">
       </div>
       <div class="field-group">
-        <label>出生年份</label>
-        <input type="number" id="year" placeholder="例：1990" min="1900" max="2100">
-      </div>
-      <div class="field-group">
-        <label>出生月份</label>
-        <select id="month">
-          <option value="">選擇月份</option>
-          <option value="1">一月</option><option value="2">二月</option><option value="3">三月</option><option value="4">四月</option>
-          <option value="5">五月</option><option value="6">六月</option><option value="7">七月</option><option value="8">八月</option>
-          <option value="9">九月</option><option value="10">十月</option><option value="11">十一月</option><option value="12">十二月</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>出生日期</label>
-        <input type="number" id="day" placeholder="例：15" min="1" max="31">
-      </div>
-      <div class="field-group">
-        <label>出生時辰</label>
-        <select id="hour">
-          <option value="">選擇時辰</option>
-          <option value="0">子時 (23:00-01:00)</option><option value="1">丑時 (01:00-03:00)</option>
-          <option value="2">寅時 (03:00-05:00)</option><option value="3">卯時 (05:00-07:00)</option>
-          <option value="4">辰時 (07:00-09:00)</option><option value="5">巳時 (09:00-11:00)</option>
-          <option value="6">午時 (11:00-13:00)</option><option value="7">未時 (13:00-15:00)</option>
-          <option value="8">申時 (15:00-17:00)</option><option value="9">酉時 (17:00-19:00)</option>
-          <option value="10">戌時 (19:00-21:00)</option><option value="11">亥時 (21:00-23:00)</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>性別</label>
-        <select id="gender">
-          <option value="male">男</option>
-          <option value="female">女</option>
-        </select>
+        <label>出生年份 (西元)</label>
+        <input type="number" placeholder="例：1990">
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="calculate()">排　盤</button>
-      <button class="btn btn-save" id="btnSave" onclick="openSaveModal()" disabled>儲　存</button>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px;">
+      <div class="field-group">
+        <label>月份</label>
+        <select>
+          <option>選擇月份</option>
+          <option value="1">1月</option><option value="2">2月</option>
+          </select>
+      </div>
+      <div class="field-group">
+        <label>日期</label>
+        <input type="number" placeholder="15">
+      </div>
+      <div class="field-group">
+        <label>時辰</label>
+        <select>
+          <option>子時 (23-01)</option>
+          <option>丑時 (01-03)</option>
+          </select>
+      </div>
     </div>
+
+    <button class="btn-primary">開始排盤</button>
   </div>
 
-  <!-- Results -->
   <div id="results">
-    <div class="result-header">
-      <div>
-        <div class="result-name" id="resultName">—</div>
-        <div class="result-birthdate" id="resultBirthdate"></div>
-      </div>
-      <div style="font-size:10px;color:rgba(245,234,208,0.25);letter-spacing:3px">命　盤</div>
+    <div class="section-title">乾坤八字</div>
+    <div class="bazi-table">
+      <div class="bazi-col"><div class="bazi-header">年柱</div><div class="heavenly-stem wood">甲</div><div class="earthly-branch fire">午</div></div>
+      <div class="bazi-col"><div class="bazi-header">月柱</div><div class="heavenly-stem earth">戊</div><div class="earthly-branch metal">申</div></div>
+      <div class="bazi-col"><div class="bazi-header">日柱</div><div class="heavenly-stem water">壬</div><div class="earthly-branch wood">寅</div></div>
+      <div class="bazi-col" style="border:none;"><div class="bazi-header">時柱</div><div class="heavenly-stem fire">丙</div><div class="earthly-branch earth">戌</div></div>
     </div>
-    <div class="section-title">四柱八字</div>
-    <div class="bazi-table" id="baziTable"></div>
-    <div class="info-grid">
-      <div class="info-card"><div class="info-card-title">五行統計</div><div class="five-elements" id="fiveElements"></div></div>
-      <div class="info-card"><div class="info-card-title">神煞星曜</div><div class="stars-grid" id="specialStars"></div></div>
-    </div>
-    <div class="section-title">紫微斗數</div>
-    <div class="ziwei-grid" id="ziweiGrid"></div>
-    <div class="section-title">大運流年</div>
-    <div class="dayun-list" id="dayunList"></div>
-
-    <div class="section-title">命盤解析</div>
-    <div id="analysisPanel"></div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal-overlay" id="saveModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeSaveModal()">✕</button>
-    <div class="modal-title">儲存命盤</div>
-    <div class="field-group" style="margin-bottom:16px">
-      <label>命盤名稱</label>
-      <input type="text" id="saveName" placeholder="請輸入姓名或備註">
-    </div>
-    <button class="btn btn-primary" onclick="confirmSave()" style="width:100%;letter-spacing:6px">確認儲存</button>
-  </div>
-</div>
-
-<script>
-// Stars
-(function(){
-  const c=document.getElementById('starsBg');
-  for(let i=0;i<110;i++){const s=document.createElement('div');s.className='star-dot';const sz=Math.random()*2+0.5;s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;c.appendChild(s);}
-})();
-
-// Constants
-const 天干=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
-const 地支=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
-const 天干五行={甲:'木',乙:'木',丙:'火',丁:'火',戊:'土',己:'土',庚:'金',辛:'金',壬:'水',癸:'水'};
-const 地支五行={子:'水',丑:'土',寅:'木',卯:'木',辰:'土',巳:'火',午:'火',未:'土',申:'金',酉:'金',戌:'土',亥:'水'};
-const 天干陰陽={甲:'陽',乙:'陰',丙:'陽',丁:'陰',戊:'陽',己:'陰',庚:'陽',辛:'陰',壬:'陽',癸:'陰'};
-const 地支藏干={子:['壬','癸'],丑:['己','癸','辛'],寅:['甲','丙','戊'],卯:['甲','乙'],辰:['戊','乙','癸'],巳:['丙','庚','戊'],午:['丙','丁','己'],未:['己','丁','乙'],申:['庚','壬','戊'],酉:['庚','辛'],戌:['戊','辛','丁'],亥:['壬','甲']};
-const 五行色={木:'wood',火:'fire',土:'earth',金:'metal',水:'water'};
-const 五行顏色={木:'#7dba5a',火:'#e05540',土:'#d4a435',金:'#aabcc8',水:'#5a9dc8'};
-const 驛馬={子:'寅',丑:'亥',寅:'申',卯:'巳',辰:'寅',巳:'亥',午:'申',未:'巳',申:'寅',酉:'亥',戌:'申',亥:'巳'};
-const 桃花={子:'酉',丑:'午',寅:'卯',卯:'子',辰:'酉',巳:'午',午:'卯',未:'子',申:'酉',酉:'午',戌:'卯',亥:'子'};
-const 華蓋={子:'辰',丑:'丑',寅:'戌',卯:'未',辰:'辰',巳:'丑',午:'戌',未:'未',申:'辰',酉:'丑',戌:'戌',亥:'未'};
-const 將星={子:'子',丑:'酉',寅:'午',卯:'卯',辰:'子',巳:'酉',午:'午',未:'卯',申:'子',酉:'酉',戌:'午',亥:'卯'};
-const 文昌={甲:'巳',乙:'午',丙:'申',丁:'酉',戊:'申',己:'酉',庚:'亥',辛:'子',壬:'寅',癸:'卯'};
-const 財庫={甲:'未',乙:'戌',丙:'戌',丁:'丑',戊:'戌',己:'丑',庚:'丑',辛:'辰',壬:'辰',癸:'未'};
-const 時辰名=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
-
-// 十神算法：以日干為我，推算其他天干的關係
-// 五行生剋：木生火、火生土、土生金、金生水、水生木
-//           木剋土、土剋水、水剋火、火剋金、金剋木
-function get十神(dayStem, targetStem) {
-  const 五行順序 = ['木','火','土','金','水'];
-  const 陰陽 = {甲:'陽',乙:'陰',丙:'陽',丁:'陰',戊:'陽',己:'陰',庚:'陽',辛:'陰',壬:'陽',癸:'陰'};
-  const dayEl = 天干五行[dayStem];
-  const tarEl = 天干五行[targetStem];
-  const sameYin = 陰陽[dayStem] === 陰陽[targetStem];
-  const di = 五行順序.indexOf(dayEl);
-  const ti = 五行順序.indexOf(tarEl);
-
-  if (dayEl === tarEl) return sameYin ? '比肩' : '劫財';
-  if (五行順序[(di+1)%5] === tarEl) return sameYin ? '食神' : '傷官';
-  if (五行順序[(di+2)%5] === tarEl) return sameYin ? '偏財' : '正財';
-  if (五行順序[(ti+2)%5] === dayEl) return sameYin ? '偏官' : '正官';
-  if (五行順序[(ti+1)%5] === dayEl) return sameYin ? '偏印' : '正印';
-  return '';
-}
-
-// State
-let currentData = null;
-
-// Storage - pure in-memory (no localStorage, no window.storage)
-let _profiles = [];
-
-async function loadProfiles() {
-  return _profiles;
-}
-async function saveProfiles(profiles) {
-  _profiles = profiles;
-  return true;
-}
-
-// Profile UI
-async function renderProfilesList() {
-  try {
-    const profiles = await loadProfiles();
-    const list = document.getElementById('profilesList');
-    const empty = document.getElementById('profilesEmpty');
-    if (!profiles.length) { list.style.display='none'; empty.style.display='block'; return; }
-    empty.style.display='none';
-    list.style.display='flex';
-    list.innerHTML = profiles.map((p,i)=>`
-      <div class="profile-chip ${currentData&&currentData.id===p.id?'active':''}" onclick="loadProfile(${i})">
-        <div class="chip-avatar">${p.name?p.name[0]:'命'}</div>
-        <div class="chip-info">
-          <div class="chip-name">${p.name||'未命名'}</div>
-          <div class="chip-meta">${p.year}年${p.month}月${p.day}日 · ${p.gender==='male'?'男':'女'}</div>
-        </div>
-        <div class="chip-delete" onclick="event.stopPropagation();deleteProfile(${i})" title="刪除">✕</div>
-      </div>
-    `).join('');
-  } catch(e) {
-    console.error('renderProfilesList error:', e);
-  }
-}
-
-async function loadProfile(idx) {
-  const profiles = await loadProfiles();
-  const p = profiles[idx];
-  if(!p) return;
-  document.getElementById('name').value=p.name;
-  document.getElementById('year').value=p.year;
-  document.getElementById('month').value=p.month;
-  document.getElementById('day').value=p.day;
-  document.getElementById('hour').value=p.hour;
-  document.getElementById('gender').value=p.gender;
-  calculate(p.id);
-}
-
-async function deleteProfile(idx) {
-  const profiles = await loadProfiles();
-  const n = profiles[idx]?.name||'此命盤';
-  if(!confirm(`確定刪除「${n}」的命盤？`)) return;
-  profiles.splice(idx,1);
-  await saveProfiles(profiles);
-  renderProfilesList();
-}
-
-// Modal
-function openSaveModal() {
-  if(!currentData) return;
-  document.getElementById('saveName').value=currentData.name||'';
-  document.getElementById('saveModal').classList.add('show');
-}
-function closeSaveModal() { document.getElementById('saveModal').classList.remove('show'); }
-async function confirmSave() {
-  if(!currentData) return;
-  const name = document.getElementById('saveName').value.trim()||'未命名';
-  const profiles = await loadProfiles();
-  const idx = profiles.findIndex(p=>p.id===currentData.id);
-  const record = {...currentData, name};
-  if(idx>=0) profiles[idx]=record; else profiles.push(record);
-  const ok = await saveProfiles(profiles);
-  if(!ok) return;
-  currentData=record;
-  closeSaveModal();
-  renderProfilesList();
-}
-
-// Calculations
-function getSolarYear(y,m,d){ return (m<2||(m===2&&d<(y%4===0?4:5)))?y-1:y; }
-function getYearPillar(y){ const n=y-4; return {stem:天干[((n%10)+10)%10],branch:地支[((n%12)+12)%12]}; }
-function getMonthPillar(y,m,d){
-  // 每月節氣入節日（各月的「節」，非「中氣」）
-  // 月序0=寅月(立春~), 1=卯月(驚蟄~), ..., 按農曆月序
-  // 對應公曆月份: 寅月=2月, 卯月=3月, ..., 丑月=1月
-  // 節氣近似日期（每年略有差異，取常用近似值）
-  // index = 公曆月份-1 (0~11)，值為該月「節」的大約日期
-  const 節日 = [6, 4, 6, 5, 6, 6, 7, 7, 8, 8, 7, 7];
-  // 農曆月支對應：寅=0,卯=1,...，公曆2月對應寅月(農曆月支index=0)
-  // 公曆月份m，節前屬上月，節後屬本月
-  // 農曆月支index: 公曆m月對應寅月起算 = (m - 2 + 12) % 12
-  let lunarMonthIdx = (m - 2 + 12) % 12; // 0=寅,1=卯,...,10=子,11=丑
-  if (d < 節日[m - 1]) lunarMonthIdx = (lunarMonthIdx - 1 + 12) % 12;
-
-  // 月支：寅月=地支index 2, 卯=3, ..., 以此類推
-  const branchIdx = (lunarMonthIdx + 2) % 12;
-
-  // 月干：依年干決定寅月天干，五虎遁年起月法
-  // 甲己年寅月起丙, 乙庚年寅月起戊, 丙辛年寅月起庚, 丁壬年寅月起壬, 戊癸年寅月起甲
-  const sy = getSolarYear(y, m, d);
-  const yearStemIdx = ((sy - 4) % 10 + 10) % 10; // 0=甲,1=乙,...
-  // 寅月天干起始index: 甲己->丙(2), 乙庚->戊(4), 丙辛->庚(6), 丁壬->壬(8), 戊癸->甲(0)
-  const 寅月起干 = [2, 4, 6, 8, 0, 2, 4, 6, 8, 0];
-  const stemBase = 寅月起干[yearStemIdx];
-  const stemIdx = (stemBase + lunarMonthIdx) % 10;
-
-  return { stem: 天干[stemIdx], branch: 地支[branchIdx] };
-}
-function getDayPillar(y,m,d){
-  const diff=Math.floor((new Date(y,m-1,d)-new Date(1900,0,1))/86400000);
-  return {stem:天干[((diff%10)+10)%10], branch:地支[((diff+10)%12+12)%12]};
-}
-function getHourPillar(ds,h){ const i=天干.indexOf(ds); return {stem:天干[((i%5)*2+h)%10], branch:地支[h]}; }
-function countFiveEl(pillars){
-  const c={木:0,火:0,土:0,金:0,水:0};
-  pillars.forEach(p=>{c[天干五行[p.stem]]++;c[地支五行[p.branch]]++;地支藏干[p.branch].forEach((h,i)=>{c[天干五行[h]]+=i===0?0.5:0.25;});});
-  return c;
-}
-function getZiwei(y,m,d,h,g){
-  const yb=地支[((y-4)%12+12)%12], ys=天干[((y-4)%10+10)%10];
-  const li=(14-(m+1)%12-h+24)%12;
-  const 局表={甲子:'水二局',甲寅:'火六局',甲辰:'火六局',甲午:'土五局',甲申:'土五局',甲戌:'木三局',乙丑:'土五局',乙卯:'木三局',乙巳:'木三局',乙未:'金四局',乙酉:'金四局',乙亥:'水二局'};
-  const 局={水二局:2,木三局:3,金四局:4,土五局:5,火六局:6};
-  const fw=局表[ys+yb]||'金四局';
-  const yang=天干.indexOf(ys)%2===0;
-  return {
-    lifePalace:地支[li], bodyPalace:['午','午','申','申','戌','戌','子','子','寅','寅','辰','辰'][h],
-    命主:['破軍','文曲','文昌','廉貞','武曲','天同','天機'][li%7],
-    身主:['火星','天相','天梁','天同','文昌','天機','武曲'][h%7],
-    五行局:fw, startAge:局[fw]||4,
-    isForward:(g==='male')?yang:!yang
-  };
-}
-function getDayun(yp,mp,g){
-  const yang=天干.indexOf(yp.stem)%2===0, fwd=(g==='male')?yang:!yang;
-  const si=天干.indexOf(mp.stem), bi=地支.indexOf(mp.branch);
-  return Array.from({length:8},(_,i)=>{const n=i+1;return fwd?{stem:天干[(si+n)%10],branch:地支[(bi+n)%12]}:{stem:天干[((si-n)%10+10)%10],branch:地支[((bi-n)%12+12)%12]};});
-}
-
-// Main
-function calculate(existingId) {
-  const year=parseInt(document.getElementById('year').value);
-  const month=parseInt(document.getElementById('month').value);
-  const day=parseInt(document.getElementById('day').value);
-  const hour=parseInt(document.getElementById('hour').value);
-  const gender=document.getElementById('gender').value;
-  const name=document.getElementById('name').value.trim()||'命主';
-  if(!year||!month||!day||isNaN(hour)){alert('請填寫完整的出生資訊');return;}
-
-  const yp=getYearPillar(getSolarYear(year,month,day));
-  const mp=getMonthPillar(year,month,day);
-  const dp=getDayPillar(year,month,day);
-  const hp=getHourPillar(dp.stem,hour);
-  const pillars=[yp,mp,dp,hp];
-
-  currentData={id:existingId||('id_'+Date.now()),name,year,month,day,hour,gender};
-  document.getElementById('btnSave').disabled=false;
-  document.getElementById('resultName').textContent=name;
-  document.getElementById('resultBirthdate').textContent=`${year}年 ${month}月 ${day}日 ${時辰名[hour]}時 · ${gender==='male'?'男':'女'}`;
-
-  renderBazi(pillars);
-  renderFiveEl(countFiveEl(pillars));
-  renderStars(pillars);
-  renderZiwei(getZiwei(year,month,day,hour,gender));
-  renderDayun(getDayun(yp,mp,gender), new Date().getFullYear()-year);
-  renderAnalysis(pillars, gender);
-
-  const r=document.getElementById('results');
-  r.style.display='block'; r.classList.remove('show'); void r.offsetWidth; r.classList.add('show');
-  r.scrollIntoView({behavior:'smooth',block:'start'});
-  renderProfilesList();
-}
-
-function renderBazi(pillars){
-  const t=document.getElementById('baziTable'); t.innerHTML='';
-  const dayStem = pillars[2].stem; // 日干為基準
-  const colOrder = [pillars[3], pillars[2], pillars[1], pillars[0]];
-  const colLabels = ['時柱','日柱','月柱','年柱'];
-
-  colLabels.forEach((lbl, i) => {
-    const p = colOrder[i];
-    const isDay = (i === 1); // 日柱天干不標十神
-    const se = 天干五行[p.stem], be = 地支五行[p.branch];
-    const stemShén = isDay ? '日元' : get十神(dayStem, p.stem);
-    const hiddenShén = 地支藏干[p.branch].map(hs => {
-      const s = get十神(dayStem, hs);
-      return s ? `<span class="${五行色[天干五行[hs]]}">${hs}<sub style="font-size:9px;opacity:0.7">${s}</sub></span>` : `<span class="${五行色[天干五行[hs]]}">${hs}</span>`;
-    }).join(' ');
-
-    // 地支本身的藏干主氣十神
-    const branchMainStem = 地支藏干[p.branch][0];
-    const branchShén = get十神(dayStem, branchMainStem);
-
-    const col = document.createElement('div'); col.className='bazi-col';
-    col.innerHTML=`
-      <div class="bazi-header">${lbl}</div>
-      <div class="bazi-cell">
-        <div class="shishen-badge ${isDay ? '' : 五行色[se]}" style="${isDay ? 'opacity:0.35' : ''}">${isDay ? '日元' : get十神(dayStem, p.stem)}</div>
-        <div class="heavenly-stem ${五行色[se]}">${p.stem}</div>
-        <span class="element-badge ${五行色[se]}">${se}</span>
-      </div>
-      <div class="bazi-cell">
-        ${branchShén ? `<div class="shishen-badge ${五行色[be]}">${branchShén}</div>` : ''}
-        <div class="earthly-branch ${五行色[be]}">${p.branch}</div>
-        <span class="element-badge ${五行色[be]}">${be}</span>
-        <div class="hidden-stems">藏：${hiddenShén}</div>
-      </div>`;
-    t.appendChild(col);
-  });
-}
-
-function renderFiveEl(count){
-  const c=document.getElementById('fiveElements'); c.innerHTML='';
-  const max=Math.max(...Object.values(count));
-  ['木','火','土','金','水'].forEach(el=>{
-    const v=count[el]||0, pct=max>0?(v/max)*100:0;
-    const item=document.createElement('div'); item.className='element-item';
-    item.innerHTML=`<div class="element-name ${五行色[el]}">${el}</div>
-      <div class="element-bar-wrap"><div class="element-bar" style="background:${五行顏色[el]};height:${Math.max(pct,5)}%"></div></div>
-      <div class="element-count ${五行色[el]}">${v%1===0?v:v.toFixed(1)}</div>`;
-    c.appendChild(item);
-  });
-}
-
-function renderStars(pillars){
-  const ds=pillars[2].stem;
-  const branches=pillars.map(p=>p.branch);
-  const 馬組=new Set(['寅','申','巳','亥']);
-  const 花組=new Set(['子','午','卯','酉']);
-  const 庫組=new Set(['辰','戌','丑','未']);
-  const 華組=new Set(['辰','戌','丑','未']); // 華蓋仍用年支查表
-  const yb=pillars[0].branch;
-
-  const 馬cnt=branches.filter(b=>馬組.has(b)).length;
-  const 花cnt=branches.filter(b=>花組.has(b)).length;
-  const 庫cnt=branches.filter(b=>庫組.has(b)).length;
-  const 華cnt=branches.filter(b=>b===華蓋[yb]).length;
-  const 將cnt=branches.filter(b=>b===將星[yb]).length;
-  const 文cnt=branches.filter(b=>b===文昌[ds]).length;
-
-  document.getElementById('specialStars').innerHTML=[
-    {icon:'馬',label:'驛馬星',t:'寅申巳亥',count:馬cnt},
-    {icon:'花',label:'桃花星',t:'子午卯酉',count:花cnt},
-    {icon:'庫',label:'財庫星',t:'辰戌丑未',count:庫cnt},
-    {icon:'華',label:'華蓋星',t:華蓋[yb],count:華cnt},
-    {icon:'將',label:'將星',t:將星[yb],count:將cnt},
-    {icon:'文',label:'文昌星',t:文昌[ds],count:文cnt},
-  ].map(s=>`<div class="star-item"><div class="star-icon">${s.icon}</div><div class="star-label">${s.label}</div><div class="star-value">${s.t}<br><span class="star-count">×${s.count}</span></div></div>`).join('');
-}
-
-function renderZiwei(z){
-  document.getElementById('ziweiGrid').innerHTML=[
-    {icon:'命',name:'命宮',v:z.lifePalace,d:'人生方向與個性根基'},
-    {icon:'身',name:'身宮',v:z.bodyPalace,d:'後天努力與身體特質'},
-    {icon:'主',name:'命主星',v:z.命主,d:'先天命運主宰星'},
-    {icon:'身',name:'身主星',v:z.身主,d:'後天行運輔佐星'},
-    {icon:'局',name:'五行局',v:z.五行局,d:`大限${z.startAge}歲起運`},
-    {icon:'運',name:'大限方向',v:z.isForward?'順行大限':'逆行大限',d:'十年大運走向'},
-  ].map(x=>`<div class="ziwei-item"><div class="ziwei-icon">${x.icon}</div><div><div class="ziwei-name">${x.name}</div><div class="ziwei-value">${x.v}</div><div class="ziwei-desc">${x.d}</div></div></div>`).join('');
-}
-
-function renderDayun(dayun,age){
-  document.getElementById('dayunList').innerHTML=dayun.map((d,i)=>{
-    const s=3+i*10,e=s+9,cur=age>=s&&age<=e;
-    return `<div class="dayun-item ${cur?'current':''}"><div class="dayun-age">${s}-${e}</div><div class="dayun-stem ${五行色[天干五行[d.stem]]}">${d.stem}</div><div class="dayun-branch ${五行色[地支五行[d.branch]]}">${d.branch}</div></div>`;
-  }).join('');
-}
-
-// ─── Analysis ─────────────────────────────────────────────────────────────────
-function getStarCount(pillars, starMap, keyType) {
-  const yb=pillars[0].branch, ds=pillars[2].stem;
-  const branches=pillars.map(p=>p.branch);
-  const target = keyType==='stem' ? starMap[ds] : starMap[yb];
-  return { count: branches.filter(b=>b===target).length, target };
-}
-
-function renderAnalysis(pillars, gender) {
-  const panel = document.getElementById('analysisPanel');
-  const yb=pillars[0].branch, ds=pillars[2].stem;
-  const branches=pillars.map(p=>p.branch);
-  const cnt=t=>branches.filter(b=>b===t).length;
-
-  const 馬組=new Set(['寅','申','巳','亥']);
-  const 花組=new Set(['子','午','卯','酉']);
-  const 庫組=new Set(['辰','戌','丑','未']);
-
-  const 馬cnt=branches.filter(b=>馬組.has(b)).length;
-  const 花cnt=branches.filter(b=>花組.has(b)).length;
-  const 庫cnt=branches.filter(b=>庫組.has(b)).length;
-  const 華cnt=cnt(華蓋[yb]), 將cnt=cnt(將星[yb]), 文cnt=cnt(文昌[ds]);
-  const fiveEl=countFiveEl(pillars);
-
-  // 五行偏枯分析
-  const elVals=Object.values(fiveEl), elMax=Math.max(...elVals), elMin=Math.min(...elVals);
-  const 缺el=Object.entries(fiveEl).filter(([,v])=>v===0).map(([k])=>k);
-  const 旺el=Object.entries(fiveEl).filter(([,v])=>v===elMax).map(([k])=>k);
-
-  // Build star analysis data
-  const starDefs = [
-    {
-      key:'馬', icon:'馬', label:'驛馬星', sub:'行動力・流動・遷移',
-      count: 馬cnt,
-      color:'#d4a435',
-      interpretations: [
-        { min:0, max:0, level:'無', text:'命中無驛馬，偏好安定環境，適合深耕一地，不宜頻繁變動，守成勝於進取。' },
-        { min:1, max:1, level:'適中', text:'一個驛馬，行動力均衡，一生有移動機會但不過分奔波，出行皆有目的性。' },
-        { min:2, max:2, level:'活躍', text:'兩個驛馬，行動力旺盛，喜歡變化與旅行，適合業務、外貿、長途往來的工作。' },
-        { min:3, max:4, level:'極旺', text:'三個以上驛馬，一生奔波不停，四海為家，若能掌控方向則可縱橫四方，否則容易漂泊無根。' },
-      ],
-      tip: 馬cnt>=2?'驛馬多者，適合選擇有出差、跨國、業務拓展性質的職業。':'驛馬少者，宜選擇固定地點深耕的職業方向。'
-    },
-    {
-      key:'花', icon:'花', label:'桃花星', sub:'人緣・魅力・感情',
-      count: 花cnt,
-      color:'#e05540',
-      interpretations: [
-        { min:0, max:0, level:'無', text:'命中無桃花，感情較為內斂，不善主動示好，但感情一旦確立則穩定專一。' },
-        { min:1, max:1, level:'適中', text:'一個桃花，人緣自然，具有親和力，感情生活順遂，異性緣佳但不氾濫。' },
-        { min:2, max:2, level:'旺盛', text:'兩個桃花，魅力十足，人際廣泛，異性緣極強，感情複雜度高，需注意感情專一。' },
-        { min:3, max:4, level:'氾濫', text:'三個以上桃花（桃花滾滾），魅力無法擋，感情線複雜，易多段感情，需謹慎維護感情關係。' },
-      ],
-      tip: 花cnt>=2?'桃花旺者，從事服務業、藝術、表演、公關等人際導向職業更能發揮優勢。':''
-    },
-    {
-      key:'庫', icon:'庫', label:'財庫星', sub:'積財・守財・財運',
-      count: 庫cnt,
-      color:'#c9a84c',
-      interpretations: [
-        { min:0, max:0, level:'無庫', text:'命中無財庫，賺錢容易花錢也快，財富難以積聚，需特別注意理財與儲蓄習慣。' },
-        { min:1, max:1, level:'有庫', text:'一個財庫，具備守財能力，有儲蓄意識，財富可以積累，財庫若被沖則需防漏財。' },
-        { min:2, max:2, level:'雙庫', text:'兩個財庫，積財能力強，善於累積財富，一生財富基礎扎實，晚年生活有保障。' },
-        { min:3, max:4, level:'庫旺', text:'三個以上財庫，守財能力極強，但有時過於保守，財富藏而不動，需注意財庫被沖時的大起大落。' },
-      ],
-      tip: 庫cnt===0?'無財庫者建議強制儲蓄或投資固定資產，避免散財。':'有財庫者宜留意財庫被沖（大運流年地支相沖）時的財務波動。'
-    },
-    {
-      key:'華', icon:'華', label:'華蓋星', sub:'才藝・靈性・孤獨感',
-      count: 華cnt,
-      color:'#5a9dc8',
-      interpretations: [
-        { min:0, max:0, level:'無', text:'命中無華蓋，性格入世，擅於融入群體，不偏向孤獨鑽研，社交活躍。' },
-        { min:1, max:1, level:'有', text:'一個華蓋，具藝術才華或宗教哲學興趣，有時喜歡獨處，才華多在某一領域深入發展。' },
-        { min:2, max:2, level:'雙華蓋', text:'兩個華蓋，才藝突出但孤獨感重，容易在人群中感到格格不入，適合獨立創作或研究。' },
-        { min:3, max:4, level:'華蓋疊', text:'三個以上華蓋，極具靈性與才華，但入世緣薄，易走向宗教、玄學、藝術等方向，感情與群體生活較為疏離。' },
-      ],
-      tip: 華cnt>=2?'華蓋多者，從事藝術、設計、命理、宗教、學術研究等領域往往能有傑出成就。':''
-    },
-    {
-      key:'將', icon:'將', label:'將星', sub:'領導力・權威・主導',
-      count: 將cnt,
-      color:'#aabcc8',
-      interpretations: [
-        { min:0, max:0, level:'無', text:'命中無將星，較不傾向掌權或主導，適合擔任幕僚、顧問或專業技術人員。' },
-        { min:1, max:1, level:'有', text:'一個將星，有一定領導氣質，在適當環境中能展現主導能力，適合管理職位。' },
-        { min:2, max:2, level:'旺', text:'兩個將星，領導慾強，天生具有權威感，適合擔任主管或獨當一面的角色。' },
-        { min:3, max:4, level:'極旺', text:'三個以上將星，霸氣十足，主導慾極強，適合創業或高層管理，但需注意人際關係的柔和度。' },
-      ],
-      tip: ''
-    },
-    {
-      key:'文', icon:'文', label:'文昌星', sub:'才智・考運・文藝',
-      count: 文cnt,
-      color:'#7dba5a',
-      interpretations: [
-        { min:0, max:0, level:'無', text:'命中無文昌，學習偏向實作而非理論，考試運平平，適合技術、實務導向的工作。' },
-        { min:1, max:1, level:'有', text:'一個文昌，才思敏捷，有文藝氣質，學習能力佳，考試運順，適合文職或腦力工作。' },
-        { min:2, max:2, level:'旺', text:'兩個文昌，才華洋溢，學習速度快，文字與藝術表達能力強，適合教育、寫作、研究領域。' },
-        { min:3, max:4, level:'極旺', text:'三個以上文昌，才氣過人，智識廣博，但有時思慮過多反而優柔寡斷，需在才華與執行力之間求平衡。' },
-      ],
-      tip: 文cnt>=1?'文昌入命者，考試、進修、文書相關事項皆有助力，宜善加把握學習機會。':''
-    },
-  ];
-
-  // Five elements summary
-  const elNames = {木:'木',火:'火',土:'土',金:'金',水:'水'};
-  const elDescs = {
-    木:'木代表生長、創造、仁慈，旺則有衝勁與創意，弱則缺乏行動力。',
-    火:'火代表熱情、表達、禮儀，旺則光芒四射，弱則缺乏自信與活力。',
-    土:'土代表穩重、信用、守成，旺則踏實可靠，過旺則保守固執。',
-    金:'金代表紀律、果斷、義氣，旺則有魄力，弱則缺乏決斷力。',
-    水:'水代表智慧、靈活、生命力，旺則聰慧圓融，過旺則流於情緒化。',
-  };
-
-  // Generate summary text
-  let summaryLines = [];
-  if(缺el.length>0) summaryLines.push(`命盤中<span class="highlight-neg">缺${缺el.join('、')}</span>，對應的特質需要後天補強，也可考慮名字或環境中加入相關五行能量。`);
-  if(旺el.length>0) summaryLines.push(`<span class="highlight-pos">${旺el.join('、')}氣最旺</span>，${旺el.map(e=>elDescs[e]).join(' ')}`);
-  if(馬cnt===0&&花cnt===0) summaryLines.push('馬與桃花皆無，偏向安靜內斂，感情與行動均較保守，宜主動創造機會。');
-  if(馬cnt>=2&&花cnt>=2) summaryLines.push('驛馬與桃花均旺，人生熱鬧精彩，四處交友結緣，但需注意感情與事業的穩定性。');
-  if(庫cnt===0) summaryLines.push('財庫缺失，財富管理需特別留意，建議養成強制儲蓄習慣。');
-  if(華cnt>=2) summaryLines.push('華蓋疊現，靈性與才藝突出，孤獨感強，宜在藝術或靈性領域尋找人生意義。');
-
-  const introHtml = summaryLines.length
-    ? `<div class="analysis-intro">${summaryLines.map(l=>`<div>・${l}</div>`).join('')}</div>`
-    : '';
-
-  function getInterp(def) {
-    return def.interpretations.find(x=>def.count>=x.min&&def.count<=x.max) || def.interpretations[def.interpretations.length-1];
-  }
-
-  const cardsHtml = starDefs.map((def,idx)=>{
-    const interp = getInterp(def);
-    const maxCount = 4;
-    const barPct = def.count===0 ? 0 : Math.min((def.count/2)*100, 100);
-    return `
-      <div class="analysis-card" id="acard_${idx}">
-        <div class="analysis-card-header" onclick="toggleCard(${idx})">
-          <div class="analysis-card-icon">${def.icon}</div>
-          <div class="analysis-card-meta">
-            <div class="analysis-card-title">${def.label}</div>
-            <div class="analysis-card-subtitle">${def.sub}</div>
-          </div>
-          <div class="analysis-card-badge">
-            <div>
-              <div class="badge-count">${def.count}</div>
-              <div class="badge-unit">個</div>
-            </div>
-          </div>
-          <div class="analysis-chevron">▼</div>
-        </div>
-        <div class="analysis-card-body">
-          <div class="analysis-card-content">
-            <div class="analysis-level">
-              <div class="level-label">${interp.level}</div>
-              <div class="level-bar-wrap">
-                <div class="level-bar" style="width:${barPct}%;background:${def.color}"></div>
-              </div>
-              <div class="level-desc">${def.count}/4</div>
-            </div>
-            <div class="analysis-text">${interp.text}</div>
-            ${def.tip ? `<div class="analysis-text" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(201,168,76,0.1);color:rgba(245,234,208,0.5)">💡 ${def.tip}</div>` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  panel.innerHTML = introHtml + `<div class="analysis-cards">${cardsHtml}</div>`;
-}
-
-function toggleCard(idx) {
-  const card = document.getElementById('acard_'+idx);
-  card.classList.toggle('open');
-}
-
-// Init
-async function init() {
-  try {
-    await renderProfilesList();
-  } catch(e) {
-    console.error('Init error:', e);
-    // storage not available, show empty state silently
-    document.getElementById('profilesEmpty').style.display = 'block';
-    document.getElementById('profilesList').style.display = 'none';
-  }
-}
-init();
-</script>
 </body>
 </html>
